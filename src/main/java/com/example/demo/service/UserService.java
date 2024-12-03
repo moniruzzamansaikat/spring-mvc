@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.User;
+import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.repository.UserRepository;
 
 @Service
@@ -23,14 +24,15 @@ public class UserService {
     }
 
     public User saveUser(User user) {
-         String hashedPassword = passwordEncoder.encode(user.getPassword());
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
-        
+
         return userRepository.save(user);
     }
 
     public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " is not found"));
     }
 
     public void deleteUser(Long id) {

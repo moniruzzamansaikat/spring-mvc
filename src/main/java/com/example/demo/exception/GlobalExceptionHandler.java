@@ -1,6 +1,6 @@
 package com.example.demo.exception;
 
-import java.util.HashMap; 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,6 +13,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleUserNotFoundException(UserNotFoundException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", false);
+        response.put("statusCode", HttpStatus.NOT_FOUND.value());
+        response.put("message", ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {

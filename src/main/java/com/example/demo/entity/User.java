@@ -5,6 +5,8 @@ import java.util.Date;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,6 +37,7 @@ public class User {
 
     @NotBlank(message = "Password is required")
     @Size(min = 6, message= "Password must be 6 character long")
+    @JsonIgnore
     private String password;
 
     @CreationTimestamp
